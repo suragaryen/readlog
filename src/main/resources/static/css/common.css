@@ -1,0 +1,30 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+
+body, html {
+    height: 100%;
+    font-family: 'Pretendard-Regular', sans-serif;
+}
+
+.header {
+    background-color: Gray;
+    height: 20%
+    
+}
+
+.content {
+    height:80%;
+}
+
+.footer {
+    background-color: rgb(119, 123, 121);
+    height: 20%
+}
+

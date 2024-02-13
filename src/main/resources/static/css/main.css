@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+
+
+.main-cont{
+	
+	display: flex;
+}
+.main-text{
+	
+	
+	font-size: 5em;
+	
+}
+
+#loginForm{
+	
+	display: flex;
+}
+
+.login-form-cont{
+	display: flex;
+	margin: auto;
+	input {
+		
+		    border: 1px solid #ddd;
+		    box-sizing: border-box;
+		    margin-bottom: 0.5em !important;
+		    border-radius: 4px;
+
+	}
+}
+
+.id-pw{
+	margin-right: 10px;
+		input{
+			
+		    width: 300px;
+    		height: 35px;
+    		font-size: 18px;
+		}
+	
+}
+
+
+#loginBtn{
+	
+	    background: black;
+    color: white;
+    width: 72px;
+    font-size: large;
+}
+
+
+
+
+
