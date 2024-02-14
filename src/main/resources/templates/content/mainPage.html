@@ -25,17 +25,28 @@
 			</div>
             <div class="mainContent">
 				<table border="1">
-			<tr>
-				<td>isbn</td>
-				<td><img src="#" alt=""></td>
-				<td><a href="#">도서제목</a></td>
-				<td>저자/출판사</td>
-				<td>출판일</td>
-			</tr> 
+           <!-- 수정 전 코드
+            <tr>
+                <td>isbn</td>
+                <td><img src="#" alt=""></td>
+                <td><a href="#">도서제목</a></td>
+                <td>저자/출판사</td>
+                <td>출판일</td>
+            </tr> 
+            -->
+            <!-- 수정 후 코드 -->
+            <tr th:each="book:${books}">
+                <td>[[${book.isbn}]]</td>
+                <td><img th:src="${book.image}" th:alt="${book.title}" width="100"></td>
+                <td><a th:href="${book.link}">[[${book.title}]]</a></td>
+                <td>[[${book.author}]]/[[${book.publisher}]]</td>
+                <td>[[${book.pubdate}]]</td>		
+            </tr>
 		</table>
+
 			</div>
         </div>
         
-        <th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>	
+        <!--<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>-->
     </body>
 </html>
