@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,27 +34,34 @@ import kr.co.readLog.naverAPI.NaverResultVO;
 		
 		
 		
+		@RequestMapping(value = "/search", method=RequestMethod.GET)
+		public String search(HttpServletRequest request) {
+			return "content/search";
+		}
+		
+		
+		
+		
 		//@RequestMapping(value = "/mainPage", method=RequestMethod.GET)
-		@GetMapping("/mainPage")
-		public String goMainpage(//String text, 
-								//ModelAndView mav
-								//Model model
-								) {
+		@GetMapping("/searchResult")
+		public ModelAndView goMainpage(@RequestParam("searchInput") String bookName) {
 			
 			ModelAndView mav = new ModelAndView();
+			
+			System.out.println(bookName);
 			
 			// 네이버 검색 API 요청
 			String clientId = "a1_WahDd7nyERBCyaRSv"; 		
 			String clientSecret = "Uw7lvHeD8e";
 			
-			String text = "스프링";
+			String text = bookName;
 			
 			 //String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text;    // JSON 결과
 			URI uri = UriComponentsBuilder
 			        .fromUriString("https://openapi.naver.com")
 			        .path("/v1/search/book.json")
 			        .queryParam("query", text)
-			        .queryParam("display", 10)
+			        .queryParam("display", 100)
 			        .queryParam("start", 1)
 			        .queryParam("sort", "sim")
 			        .encode()
@@ -85,13 +93,17 @@ import kr.co.readLog.naverAPI.NaverResultVO;
 			}
 	        
 	        List<BookVO> books =resultVO.getItems();	// books를 list.html에 출력 -> model 선언
-	        
-	        System.out.println(books);
+	        int resultCnt = resultVO.getDisplay();
+	        //System.out.println(books);
 	        mav.addObject("books", books);
-	        
+	        mav.addObject("cnt", resultCnt);
+	        System.out.println(resultCnt);
+	        mav.setViewName("content/searchResult");
 	        //model.add("books", books);
-			
-			return "content/mainPage";
+			//return "content/mainPage";
+	        //System.out.println("검색어 :" + subject);
+	        //System.out.println(subject);
+	        return mav;
 		}
 		
 		

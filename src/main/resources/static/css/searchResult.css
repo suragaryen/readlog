@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+
+
+#bookImg{
+	border: solid gray 1px;
+	margin-bottom: 6px;
+}
+
+.book-detail{
+	
+	span{
+		color: #828282;
+	}
+}
+
+
+
