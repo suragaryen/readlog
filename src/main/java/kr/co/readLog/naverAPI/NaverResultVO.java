@@ -1,6 +1,9 @@
 package kr.co.readLog.naverAPI;
 
 import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Setter
 @Getter
+@Repository
 public class NaverResultVO {
 	private String lastBuildDate;
 	private int total;

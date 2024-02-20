@@ -44,25 +44,65 @@ import kr.co.readLog.naverAPI.NaverResultVO;
 		
 		//@RequestMapping(value = "/mainPage", method=RequestMethod.GET)
 		@GetMapping("/searchResult")
-		public ModelAndView goMainpage(@RequestParam("searchInput") String bookName) {
+		public ModelAndView goMainpage(@RequestParam("searchInput") String searchInput,
+									@RequestParam(defaultValue = "1") int page) {
 			
 			ModelAndView mav = new ModelAndView();
 			
-			System.out.println(bookName);
 			
 			// 네이버 검색 API 요청
 			String clientId = "a1_WahDd7nyERBCyaRSv"; 		
 			String clientSecret = "Uw7lvHeD8e";
+			String text = searchInput;
 			
-			String text = bookName;
+			
+			
+			int startIndex = 1;
+			int display = 9;
+			
+			if(page>1) {
+				
+				startIndex = display + 1;
+				display = page * display;
+				
+			}
+			
+			
+			
+			/*
+			  
+			  int start 
+			  
+			 page 1
+			 start = 1 / display = 9
+			 
+			 page 2
+			 start = 10 / display = 18
+			 
+			 page 3
+			 start = 19 / display = 27
+			 
+			 if(page > 1){
+			 
+			 start = display + 1
+			 display = (page* display)
+			 
+			 } 
+			  
+			  
+			  
+			  
+			 
+			 */
+			
 			
 			 //String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text;    // JSON 결과
 			URI uri = UriComponentsBuilder
 			        .fromUriString("https://openapi.naver.com")
 			        .path("/v1/search/book.json")
 			        .queryParam("query", text)
-			        .queryParam("display", 100)
-			        .queryParam("start", 1)
+			        .queryParam("display", display) //최대
+			        .queryParam("start", startIndex)
 			        .queryParam("sort", "sim")
 			        .encode()
 			        .build()
@@ -93,18 +133,38 @@ import kr.co.readLog.naverAPI.NaverResultVO;
 			}
 	        
 	        List<BookVO> books =resultVO.getItems();	// books를 list.html에 출력 -> model 선언
-	        int resultCnt = resultVO.getDisplay();
-	        //System.out.println(books);
+	        int resultCnt = resultVO.getTotal();
+	        
+	        Pagination pagination = new Pagination(resultCnt, page);
+	        
+	        
+	        //각 행의 row num?
+			/*
+			  
+			  resultCnt = 38이면
+			  
+			 
+			 */
+	        
+	        
+	        //System.out.println(resultCnt);
+	        //System.out.println(resultVO.getStart());
+	        //System.out.println(resultVO.toString());
+	        
+	        pagination.setStartIndex(startIndex);
+	        
+	        System.out.println(pagination.toString());
+	        
 	        mav.addObject("books", books);
 	        mav.addObject("cnt", resultCnt);
-	        System.out.println(resultCnt);
+	        mav.addObject("searchInput",searchInput);
 	        mav.setViewName("content/searchResult");
-	        //model.add("books", books);
-			//return "content/mainPage";
-	        //System.out.println("검색어 :" + subject);
-	        //System.out.println(subject);
+	        mav.addObject("pagination", pagination);
+	        
+	        
+
 	        return mav;
-		}
+		}	
 		
 		
 		
