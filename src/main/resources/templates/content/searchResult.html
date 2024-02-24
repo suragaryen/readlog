@@ -20,22 +20,43 @@
 		integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 </th:block>
+<style>
+	dialog {
+		width: 500px;
+		height: 500px;
+		padding: 20px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		background-color: #fff;
+	}
+
+	#closeModal {
+		position: relative;
+		left: 435px;
+		background: white;
+	}
+	
+	#cartBtn{
+		    background: black;
+    color: white;
+    border: none;
+    width: 200px;
+    height: 34px;
+    font-weight: 100;
+    font-family: sans-serif;
+	}
+	
+	#modalContent{
+		text-align: center;
+	}
+</style>
 
 <body>
 	<!--<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>-->
 
 	<div layout:fragment="content" class="content">
 		<th:block layout:fragment="sideBar" th:include="@{/fragments/sideBar}"></th:block>
-		<!--
-            <div class="sideBar">
-				<h1>readlog</h1>
-				<ul>
-					<li><img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/search--v1.png" alt="search--v1"/><a href="#"> 도서검색</a></li>
-					<li><img width="25" height="25" src="https://img.icons8.com/ios/50/book--v1.png" alt="book--v1"/><a href="#"> 서재</a></li>
-					
-				</ul>
-			</div>
-			-->
+
 		<div class="mainContent">
 			<form id="searchForm" action="/searchResult" method="get" style="margin-bottom: 20px;">
 				<input name="searchInput" id="searchInput" type="text" placeholder="도서명을 입력하여 주세요." required>
@@ -43,16 +64,36 @@
 			</form>
 			<p>Number of books: <span th:text="${cnt}"></span></p>
 			<div class="row">
-				<div class="col-sm-4" th:each="book : ${books}" style="margin-bottom: 10px;">
+				<div id="bookContainer" class="col-sm-4" th:each="book : ${books}" style="margin-bottom: 10px;">
 					<img id="bookImg" th:src="${book.image}" th:alt="${book.title}" width="200">
-					<div class="book-detail" style="width: 200px;">
+					<div id="bookDetailBox" class="book-detail" style="width: 200px;">
 						<h5 th:text="${book.title}"></h5>
 						<span th:text="${book.author}"></span> ·
 						<span th:text="${book.publisher}"></span>
+						<span class="description" th:text="${book.description}" style="display: none;"></span>
 					</div>
 				</div>
 			</div>
 
+			<!--모달 시작 -->
+
+			<dialog id="myModal">
+				<button id="closeModal">X</button>
+				<div id="modalContent">
+					<h3>책 상세정보</h3><br>
+					<img width="200px"><br>
+					<br>
+					<h5></h5>
+					<span class="modalDesc"></span>
+					<span></span>
+					<br>
+					<br>
+					<button id="cartBtn">내 서재에 담기</button>
+				</div>
+			</dialog>
+
+
+			<!--페이징 시작-->
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<li class="page-item">
@@ -68,8 +109,10 @@
 							<span aria-hidden="true">이전</span>
 						</a>
 					</li>
+					<!--th:block = 반복문을 나타내는 태그, th:each 속성으로 반복할 변수와 범위 지정. -->
 					<th:block th:each="pageNumber : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
 						<li class="page-item" th:class="${pageNumber == pagination.page ? 'active' : ''}">
+							<!--조건이 참일시 active 클래스 반환.-->
 							<a class="page-link"
 								th:href="@{/searchResult(searchInput=${searchInput}, page=${pageNumber})}"
 								th:text="${pageNumber}"></a>
@@ -90,11 +133,49 @@
 						</a>
 					</li>
 				</ul>
-			</nav>
-		</div>
-	</div>
+			</nav><!--페이징 끝 -->
+		</div><!--mainContent End-->
+	</div><!--content End -->
 
 	<!--<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>-->
+
+	<script>
+
+		// 모달 대화 상자 열기
+		document.getElementById('bookContainer').addEventListener('click', function () {
+			document.getElementById('myModal').showModal();
+		});
+
+		// 모달 대화 상자 닫기
+		document.getElementById('closeModal').addEventListener('click', function () {
+			document.getElementById('myModal').close();
+		});
+
+
+		document.querySelectorAll('#bookContainer').forEach(function (bookContainer) {
+			bookContainer.addEventListener('click', function () {
+				// 클릭된 도서 요소에서 book.title 값을 가져옴
+				var title = bookContainer.querySelector('.book-detail h5').innerText;
+				var img = bookContainer.querySelector('img').src;
+				var description = bookContainer.querySelector('.book-detail .description').innerText;
+
+				// 모달 창에 해당 도서의 제목 표시
+				document.querySelector('#myModal h5').innerText = title;
+				document.querySelector('#myModal img').src = img;
+				document.querySelector('#myModal .modalDesc').innerText = description;
+
+				// 모달 창 열기
+				document.getElementById('myModal').showModal();
+			});
+		});
+
+		// 모달 닫기 버튼 클릭 시 모달 창 닫기
+		document.getElementById('closeModal').addEventListener('click', function () {
+			document.getElementById('myModal').close();
+		});
+
+	</script>
+
 </body>
 
 
