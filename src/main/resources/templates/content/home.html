@@ -10,10 +10,11 @@
         <!--/* css */-->
         <link th:href="@{/css/common.css}" rel="stylesheet" />
         <link th:href="@{/css/sideBar.css}" rel="stylesheet" />
+         <link th:href="@{/css/main.css}" rel="stylesheet" />
         
     </th:block>
     <body>
-        <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+        <!--<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>-->
 		
         <div layout:fragment="content" class="content">
 			<div class="main-cont">
@@ -21,16 +22,16 @@
 		            <h1>welcome to<br> visit readlog</h1>
 				</div>
 				<div class="login-form-cont">
-					<form id="loginForm" method="">
+					<form id="loginForm" method="post" action="/login">
 						<div class="id-pw">
-							<input type="text" placeholder="아이디"><br>
-							<input type="password" placeholder="비밀번호">
+							<input id="username" name="username" type="text" placeholder="아이디"><br>
+							<input id="password" name="password" type="password" placeholder="비밀번호">
 						</div>
 						<input type="submit" id="loginBtn" value="Log-in">
 				</div>
 			</div>
         </div>
         
-        <th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>	
+        <!--<th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>-->	
     </body>
 </html>

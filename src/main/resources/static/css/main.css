@@ -16,6 +16,8 @@
 #loginForm{
 	
 	display: flex;
+	margin-left: 122px;
+	margin-bottom: 120px;
 }
 
 .login-form-cont{
